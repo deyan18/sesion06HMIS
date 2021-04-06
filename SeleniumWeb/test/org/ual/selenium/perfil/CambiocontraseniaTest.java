@@ -26,6 +26,7 @@ import org.openqa.selenium.Keys;
 import java.util.*;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Duration;
 public class CambiocontraseniaTest {
   private WebDriver driver;
   private Map<String, Object> vars;
@@ -265,6 +266,6 @@ public class CambiocontraseniaTest {
     // 29 | assertAlert | La contrasenia no es igual a su confirmacion | 
     assertThat(driver.switchTo().alert().getText(), is("La contrasenia no es igual a su confirmacion"));
     // 30 | click | css=.btn | 
-    driver.findElement(By.cssSelector(".btn")).click();
+    //driver.findElement(By.cssSelector(".btn")).click();
   }
 }
