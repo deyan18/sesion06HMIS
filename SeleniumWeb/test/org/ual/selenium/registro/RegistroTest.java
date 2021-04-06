@@ -129,7 +129,7 @@ public class RegistroTest {
     // 12 | echo | ${message} | 
     System.out.println(vars.get("message").toString());
     // 13 | assert | message | Please match the requested format.
-    assertEquals(vars.get("message").toString(), "Please match the format requested.");
+    assertEquals(vars.get("message").toString(), "Utiliza un formato que coincida con el solicitado");
   }
   @Test
   public void registroapellidosvacio() {
@@ -158,7 +158,7 @@ public class RegistroTest {
     // 11 | echo | ${message} | 
     System.out.println(vars.get("message").toString());
     // 12 | assert | message | Please fill out this field.
-    assertEquals(vars.get("message").toString(), "Please fill in this field.");
+    assertEquals(vars.get("message").toString(), "Completa este campo");
   }
   @Test
   public void registrocontraseniadiferente() {
@@ -216,7 +216,7 @@ public class RegistroTest {
     // 12 | echo | ${message} | 
     System.out.println(vars.get("message").toString());
     // 13 | assert | message | Please match the requested format.
-    assertEquals(vars.get("message").toString(), "Please match the format requested.");
+    assertEquals(vars.get("message").toString(), "Utiliza un formato que coincida con el solicitado");
   }
   @Test
   public void registroemail1() {
@@ -247,7 +247,7 @@ public class RegistroTest {
     // 12 | echo | ${message} | 
     System.out.println(vars.get("message").toString());
     // 13 | assert | message | Please include an '@' in the email address. 'correo.com' is missing an '@'.
-    assertEquals(vars.get("message").toString(), "Please include an \'@\' in the email address. \'correo.com\' is missing an \'@\'.");
+    assertEquals(vars.get("message").toString(), "Incluye un signo \"@\" en la dirección de correo electrónico. La dirección \"correo.com\" no incluye el signo \"@\".");
   }
   @Test
   public void registroemail2() {
@@ -276,7 +276,7 @@ public class RegistroTest {
     // 11 | echo | ${message} | 
     System.out.println(vars.get("message").toString());
     // 12 | assert | message | Please enter a part following '@'. 'correo@' is incomplete.
-    assertEquals(vars.get("message").toString(), "Please enter a part following \'@\'. \'correo@\' is incomplete.");
+    assertEquals(vars.get("message").toString(), "Introduce texto detrás del signo \"@\". La dirección \"correo@\" está incompleta.");
   }
   @Test
   public void registronombrerango() {
@@ -307,7 +307,7 @@ public class RegistroTest {
     // 12 | echo | ${message} | 
     System.out.println(vars.get("message").toString());
     // 13 | assert | message | Please match the requested format.
-    assertEquals(vars.get("message").toString(), "Please match the format requested.");
+    assertEquals(vars.get("message").toString(), "Utiliza un formato que coincida con el solicitado");
   }
   @Test
   public void registronombrevacio() {
@@ -336,6 +336,6 @@ public class RegistroTest {
     // 11 | echo | ${message} | 
     System.out.println(vars.get("message").toString());
     // 12 | assert | message | Please fill out this field.
-    assertEquals(vars.get("message").toString(), "Please fill in this field.");
+    assertEquals(vars.get("message").toString(), "Completa este campo");
   }
 }
