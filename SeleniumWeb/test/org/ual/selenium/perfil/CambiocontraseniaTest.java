@@ -24,9 +24,17 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.Keys;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
+import java.util.concurrent.TimeUnit;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
+import java.util.concurrent.TimeUnit;
+
 public class CambiocontraseniaTest {
   private WebDriver driver;
   private Map<String, Object> vars;
@@ -75,6 +83,12 @@ public class CambiocontraseniaTest {
   }
   @Test
   public void perfilcontraseniacorrecta() {
+	Wait wait = new FluentWait(driver)
+			  .withTimeout(20, TimeUnit.SECONDS)
+			  .pollingEvery(3, TimeUnit.SECONDS)
+			  .ignoring(NoSuchElementException.class);
+	//WebDriverWait wait=new WebDriverWait(driver, 20);
+	  
     // Test name: Perfil_contrasenia_correcta
     // Step # | name | target | value
     // 1 | open | / | 
@@ -111,6 +125,10 @@ public class CambiocontraseniaTest {
     driver.findElement(By.cssSelector(".btn")).click();
     // 17 | click | linkText=Pinche aqui para iniciar sesion | 
     driver.findElement(By.linkText("Pinche aqui para iniciar sesion")).click();
+    
+    //driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+    wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".btn")));
+    
     // 18 | click | id=username | 
     driver.findElement(By.id("username")).click();
     // 19 | type | id=username | ${emailrandom}
@@ -120,8 +138,15 @@ public class CambiocontraseniaTest {
     // 21 | type | id=password | 123456
     driver.findElement(By.id("password")).sendKeys("123456");
     // 22 | click | css=.btn | 
+    
+    driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+    
     driver.findElement(By.cssSelector(".btn")).click();
     // 23 | click | linkText=Editar | 
+    
+    //driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+    wait.until(ExpectedConditions.elementToBeClickable(By.linkText("Editar")));
+    
     driver.findElement(By.linkText("Editar")).click();
     // 24 | click | id=contr | 
     driver.findElement(By.id("contr")).click();
@@ -138,6 +163,12 @@ public class CambiocontraseniaTest {
   }
   @Test
   public void perfilcontraseniacorta() {
+	Wait wait = new FluentWait(driver)
+			  .withTimeout(20, TimeUnit.SECONDS)
+			  .pollingEvery(3, TimeUnit.SECONDS)
+			  .ignoring(NoSuchElementException.class);
+	//WebDriverWait wait=new WebDriverWait(driver, 20);
+	
     // Test name: Perfil_contrasenia_corta
     // Step # | name | target | value
     // 1 | open | / | 
@@ -174,6 +205,11 @@ public class CambiocontraseniaTest {
     driver.findElement(By.cssSelector(".btn")).click();
     // 17 | click | linkText=Pinche aqui para iniciar sesion | 
     driver.findElement(By.linkText("Pinche aqui para iniciar sesion")).click();
+
+    //driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+    wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".btn")));
+
+    
     // 18 | click | id=username | 
     driver.findElement(By.id("username")).click();
     // 19 | type | id=username | ${emailrandom}
@@ -183,8 +219,15 @@ public class CambiocontraseniaTest {
     // 21 | type | id=password | 123456
     driver.findElement(By.id("password")).sendKeys("123456");
     // 22 | click | css=.btn | 
+    
+    driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+    
     driver.findElement(By.cssSelector(".btn")).click();
     // 23 | click | linkText=Editar | 
+    
+    //driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+    wait.until(ExpectedConditions.elementToBeClickable(By.linkText("Editar")));
+    
     driver.findElement(By.linkText("Editar")).click();
     // 24 | click | id=contr | 
     driver.findElement(By.id("contr")).click();
@@ -205,7 +248,13 @@ public class CambiocontraseniaTest {
   }
   @Test
   public void perfilcontraseniadistinta() {
-    // Test name: Perfil_contrasenia_distinta
+	Wait wait = new FluentWait(driver)
+			  .withTimeout(20, TimeUnit.SECONDS)
+			  .pollingEvery(3, TimeUnit.SECONDS)
+			  .ignoring(NoSuchElementException.class);
+	//WebDriverWait wait=new WebDriverWait(driver, 20);
+	  
+	// Test name: Perfil_contrasenia_distinta
     // Step # | name | target | value
     // 1 | open | / | 
     driver.get("http://localhost:8080/");
@@ -241,6 +290,10 @@ public class CambiocontraseniaTest {
     driver.findElement(By.cssSelector(".btn")).click();
     // 17 | click | linkText=Pinche aqui para iniciar sesion | 
     driver.findElement(By.linkText("Pinche aqui para iniciar sesion")).click();
+
+    //driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+    wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".btn")));
+    
     // 18 | click | id=username | 
     driver.findElement(By.id("username")).click();
     // 19 | type | id=username | ${emailrandom}
@@ -250,8 +303,15 @@ public class CambiocontraseniaTest {
     // 21 | type | id=password | 123456
     driver.findElement(By.id("password")).sendKeys("123456");
     // 22 | click | css=.btn | 
+    
+    driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+    
     driver.findElement(By.cssSelector(".btn")).click();
     // 23 | click | linkText=Editar | 
+
+    //driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+    wait.until(ExpectedConditions.elementToBeClickable(By.linkText("Editar")));
+    
     driver.findElement(By.linkText("Editar")).click();
     // 24 | click | id=contr | 
     driver.findElement(By.id("contr")).click();
@@ -266,6 +326,6 @@ public class CambiocontraseniaTest {
     // 29 | assertAlert | La contrasenia no es igual a su confirmacion | 
     assertThat(driver.switchTo().alert().getText(), is("La contrasenia no es igual a su confirmacion"));
     // 30 | click | css=.btn | 
-    //driver.findElement(By.cssSelector(".btn")).click();
+    driver.findElement(By.cssSelector(".btn")).click();
   }
 }
