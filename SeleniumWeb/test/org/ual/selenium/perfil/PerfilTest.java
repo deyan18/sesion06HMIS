@@ -34,7 +34,7 @@ public class PerfilTest {
   public void setUp() {
 	// Browser selector 
 			int browser= 1; // 0: firefox, 1: chrome,...
-			Boolean headless = true;
+			Boolean headless = false;
 
 			switch (browser) {
 			case 0:  // firefox
