@@ -35,7 +35,7 @@ public class ContraseniaTest {
   public void setUp() {
 	// Browser selector 
 			int browser= 1; // 0: firefox, 1: chrome,...
-			Boolean headless = false;
+			Boolean headless = true;
 
 			switch (browser) {
 			case 0:  // firefox
