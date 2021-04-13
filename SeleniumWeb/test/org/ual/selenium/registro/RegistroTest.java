@@ -205,7 +205,7 @@ public class RegistroTest {
     // 11 | echo | ${message} | 
     System.out.println(vars.get("message").toString());
     // 12 | assert | message | Please include an '@' in the email address. 'correo' is missing an '@'.
-    assertEquals(vars.get("message").toString(), "Please include an \'@\' in the email address. \'correo\' is missing an \'@\'.");
+    assertEquals(vars.get("message").toString(), "Incluye un signo \"@\" en la dirección de correo electrónico. La dirección \"correo\" no incluye el signo \"@\".");
   }
   @Test
   public void correoincorrecto2() {
@@ -234,7 +234,7 @@ public class RegistroTest {
     // 11 | echo | ${message} | 
     System.out.println(vars.get("message").toString());
     // 12 | assert | message | Please enter a part following '@'. 'correo@' is incomplete.
-    assertEquals(vars.get("message").toString(), "Please enter a part following \'@\'. \'correo@\' is incomplete.");
+    assertEquals(vars.get("message").toString(), "Introduce texto detrás del signo \"@\". La dirección \"correo@\" está incompleta.");
   }
   @Test
   public void nombrefalta() {

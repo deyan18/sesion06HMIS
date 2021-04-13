@@ -32,7 +32,7 @@ public class PrincipalTest {
   JavascriptExecutor js;
   @Before
   public void setUp() {
-	  int browser= 0; // 0: firefox, 1: chrome,...
+	  int browser= 1; // 0: firefox, 1: chrome,...
 		Boolean headless = true;
 
 		switch (browser) {

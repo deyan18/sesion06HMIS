@@ -34,7 +34,7 @@ public class MiembrosTest {
   @Before
   public void setUp() {
 	// Browser selector 
-	int browser= 0; // 0: firefox, 1: chrome,...
+	int browser= 1; // 0: firefox, 1: chrome,...
 	Boolean headless = true;
 
 	switch (browser) {
