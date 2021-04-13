@@ -32,8 +32,8 @@ public class PrincipalTest {
   JavascriptExecutor js;
   @Before
   public void setUp() {
-	  int browser= 1; // 0: firefox, 1: chrome,...
-		Boolean headless = false;
+	  int browser= 0; // 0: firefox, 1: chrome,...
+		Boolean headless = true;
 
 		switch (browser) {
 		case 0:  // firefox
@@ -85,15 +85,15 @@ public class PrincipalTest {
     // 4 | assertText | css=.list-group-item:nth-child(1) | Repositorio de este proyecto: Pincha Aqui
     assertThat(driver.findElement(By.cssSelector(".list-group-item:nth-child(1)")).getText(), is("Repositorio de este proyecto: Pincha Aqui"));
     // 5 | assertText | css=.list-group-item:nth-child(2) | Documentaci贸n GitHub: Pincha Aqui
-    assertThat(driver.findElement(By.cssSelector(".list-group-item:nth-child(2)")).getText(), is("Documentaci髇 GitHub: Pincha Aqui"));
+    assertThat(driver.findElement(By.cssSelector(".list-group-item:nth-child(2)")).getText(), is("Documentaci贸n GitHub: Pincha Aqui"));
     // 6 | assertText | css=.list-group-item:nth-child(3) | Organizaci贸n HMIS: Pincha Aqui
-    assertThat(driver.findElement(By.cssSelector(".list-group-item:nth-child(3)")).getText(), is("Organizaci髇 HMIS: Pincha Aqui"));
+    assertThat(driver.findElement(By.cssSelector(".list-group-item:nth-child(3)")).getText(), is("Organizaci贸n HMIS: Pincha Aqui"));
     // 7 | assertText | css=.list-group-item:nth-child(4) | Git Book: Pincha Aqui
     assertThat(driver.findElement(By.cssSelector(".list-group-item:nth-child(4)")).getText(), is("Git Book: Pincha Aqui"));
     // 8 | assertText | css=.list-group-item:nth-child(5) | Azure Portal: Pincha Aqui
     assertThat(driver.findElement(By.cssSelector(".list-group-item:nth-child(5)")).getText(), is("Azure Portal: Pincha Aqui"));
     // 9 | assertText | css=.list-group-item:nth-child(6) | Documentaci贸n Azure: Pincha Aqui
-    assertThat(driver.findElement(By.cssSelector(".list-group-item:nth-child(6)")).getText(), is("Documentaci髇 Azure: Pincha Aqui"));
+    assertThat(driver.findElement(By.cssSelector(".list-group-item:nth-child(6)")).getText(), is("Documentaci贸n Azure: Pincha Aqui"));
     // 10 | assertText | css=.mx-auto > .page-section-heading | ENLACES A RECURSOS
     assertThat(driver.findElement(By.cssSelector(".mx-auto > .page-section-heading")).getText(), is("ENLACES A RECURSOS"));
     // 11 | click | css=.list-group-item:nth-child(2) > a | 
