@@ -27,16 +27,29 @@ import java.util.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 public class PrincipalTest {
-  private WebDriver driver;
-  private Map<String, Object> vars;
-  JavascriptExecutor js;
-  @Before
-  public void setUp() {
-	  int browser= 1; // 0: firefox, 1: chrome,...
-		Boolean headless = true;
+	private WebDriver driver;
+	private Map<String, Object> vars;
+	JavascriptExecutor js;
+	@Before
+	public void setUp() {
+		// Using a system property to chose the browser (by jjcanada)
+		// Browser as System.property: "browserWebDriver"
+		// In maven, call: 
+		//    run with firefox: clean test -DbrowserWebDriver=firefox
+		//    run with chrome : clean test -DbrowserWebDriver=chrome 
 
-		switch (browser) {
-		case 0:  // firefox
+		// System.setProperty("browserWebDriver", "firefox"); 
+		String browserProperty = ""; 
+		browserProperty= System.getProperty("browserWebDriver");
+
+		// run headless: clean test -DbrowserWebDriver=firefox -Dheadless=true
+		Boolean headless = false;
+		if (System.getProperty("headless").equals("true")) {
+			headless = true;
+		}
+
+		switch (browserProperty) {
+		case "firefox": 
 			// Firefox 
 			// Descargar geckodriver de https://github.com/mozilla/geckodriver/releases
 			// Descomprimir el archivo geckodriver.exe en la carpeta drivers
@@ -47,7 +60,7 @@ public class PrincipalTest {
 			driver = new FirefoxDriver(firefoxOptions);
 
 			break;
-		case 1: // chrome
+		case "chrome": 
 			// Chrome
 			// Descargar Chromedriver de https://chromedriver.chromium.org/downloads
 			// Descomprimir el archivo chromedriver.exe en la carpeta drivers
@@ -66,37 +79,36 @@ public class PrincipalTest {
 		}
 		js = (JavascriptExecutor) driver;
 		vars = new HashMap<String, Object>();
-
-  }
-  @After
-  public void tearDown() {
-    driver.quit();
-  }
-  @Test
-  public void paginaprincipal() {
-    // Test name: pagina_principal
-    // Step # | name | target | value
-    // 1 | open | https://hmis21-drs600.azurewebsites.net/ | 
-    driver.get("https://hmis21-drs600.azurewebsites.net/");
-    // 2 | setWindowSize | 1250x809 | 
-    driver.manage().window().setSize(new Dimension(1250, 809));
-    // 3 | assertText | css=.masthead-heading | GALVEZROSENOVBAOUCH
-    assertThat(driver.findElement(By.cssSelector(".masthead-heading")).getText(), is("GALVEZROSENOVBAOUCH"));
-    // 4 | assertText | css=.list-group-item:nth-child(1) | Repositorio de este proyecto: Pincha Aqui
-    assertThat(driver.findElement(By.cssSelector(".list-group-item:nth-child(1)")).getText(), is("Repositorio de este proyecto: Pincha Aqui"));
-    // 5 | assertText | css=.list-group-item:nth-child(2) | Documentación GitHub: Pincha Aqui
-    assertThat(driver.findElement(By.cssSelector(".list-group-item:nth-child(2)")).getText(), is("Documentación GitHub: Pincha Aqui"));
-    // 6 | assertText | css=.list-group-item:nth-child(3) | Organización HMIS: Pincha Aqui
-    assertThat(driver.findElement(By.cssSelector(".list-group-item:nth-child(3)")).getText(), is("Organización HMIS: Pincha Aqui"));
-    // 7 | assertText | css=.list-group-item:nth-child(4) | Git Book: Pincha Aqui
-    assertThat(driver.findElement(By.cssSelector(".list-group-item:nth-child(4)")).getText(), is("Git Book: Pincha Aqui"));
-    // 8 | assertText | css=.list-group-item:nth-child(5) | Azure Portal: Pincha Aqui
-    assertThat(driver.findElement(By.cssSelector(".list-group-item:nth-child(5)")).getText(), is("Azure Portal: Pincha Aqui"));
-    // 9 | assertText | css=.list-group-item:nth-child(6) | Documentación Azure: Pincha Aqui
-    assertThat(driver.findElement(By.cssSelector(".list-group-item:nth-child(6)")).getText(), is("Documentación Azure: Pincha Aqui"));
-    // 10 | assertText | css=.mx-auto > .page-section-heading | ENLACES A RECURSOS
-    assertThat(driver.findElement(By.cssSelector(".mx-auto > .page-section-heading")).getText(), is("ENLACES A RECURSOS"));
-    // 11 | click | css=.list-group-item:nth-child(2) > a | 
-    driver.findElement(By.cssSelector(".list-group-item:nth-child(2) > a")).click();
-  }
+	}
+	@After
+	public void tearDown() {
+		driver.quit();
+	}
+	@Test
+	public void paginaprincipal() {
+		// Test name: pagina_principal
+		// Step # | name | target | value
+		// 1 | open | https://hmis21-drs600.azurewebsites.net/ | 
+		driver.get("https://hmis21-drs600.azurewebsites.net/");
+		// 2 | setWindowSize | 1250x809 | 
+		driver.manage().window().setSize(new Dimension(1250, 809));
+		// 3 | assertText | css=.masthead-heading | GALVEZROSENOVBAOUCH
+		assertThat(driver.findElement(By.cssSelector(".masthead-heading")).getText(), is("GALVEZROSENOVBAOUCH"));
+		// 4 | assertText | css=.list-group-item:nth-child(1) | Repositorio de este proyecto: Pincha Aqui
+		assertThat(driver.findElement(By.cssSelector(".list-group-item:nth-child(1)")).getText(), is("Repositorio de este proyecto: Pincha Aqui"));
+		// 5 | assertText | css=.list-group-item:nth-child(2) | Documentación GitHub: Pincha Aqui
+		assertThat(driver.findElement(By.cssSelector(".list-group-item:nth-child(2)")).getText(), is("Documentación GitHub: Pincha Aqui"));
+		// 6 | assertText | css=.list-group-item:nth-child(3) | Organización HMIS: Pincha Aqui
+		assertThat(driver.findElement(By.cssSelector(".list-group-item:nth-child(3)")).getText(), is("Organización HMIS: Pincha Aqui"));
+		// 7 | assertText | css=.list-group-item:nth-child(4) | Git Book: Pincha Aqui
+		assertThat(driver.findElement(By.cssSelector(".list-group-item:nth-child(4)")).getText(), is("Git Book: Pincha Aqui"));
+		// 8 | assertText | css=.list-group-item:nth-child(5) | Azure Portal: Pincha Aqui
+		assertThat(driver.findElement(By.cssSelector(".list-group-item:nth-child(5)")).getText(), is("Azure Portal: Pincha Aqui"));
+		// 9 | assertText | css=.list-group-item:nth-child(6) | Documentación Azure: Pincha Aqui
+		assertThat(driver.findElement(By.cssSelector(".list-group-item:nth-child(6)")).getText(), is("Documentación Azure: Pincha Aqui"));
+		// 10 | assertText | css=.mx-auto > .page-section-heading | ENLACES A RECURSOS
+		assertThat(driver.findElement(By.cssSelector(".mx-auto > .page-section-heading")).getText(), is("ENLACES A RECURSOS"));
+		// 11 | click | css=.list-group-item:nth-child(2) > a | 
+		driver.findElement(By.cssSelector(".list-group-item:nth-child(2) > a")).click();
+	}
 }

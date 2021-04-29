@@ -27,240 +27,252 @@ import java.util.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 public class RegistroTest {
-  private WebDriver driver;
-  private Map<String, Object> vars;
-  JavascriptExecutor js;
-  @Before
-  public void setUp() {
-		// Browser selector 
-				int browser= 1; // 0: firefox, 1: chrome,...
-				Boolean headless = true;
+	private WebDriver driver;
+	private Map<String, Object> vars;
+	JavascriptExecutor js;
+	@Before
+	public void setUp() {
+		// Using a system property to chose the browser (by jjcanada)
+		// Browser as System.property: "browserWebDriver"
+		// In maven, call: 
+		//    run with firefox: clean test -DbrowserWebDriver=firefox
+		//    run with chrome : clean test -DbrowserWebDriver=chrome 
 
-				switch (browser) {
-				case 0:  // firefox
-					// Firefox 
-					// Descargar geckodriver de https://github.com/mozilla/geckodriver/releases
-					// Descomprimir el archivo geckodriver.exe en la carpeta drivers
+		// System.setProperty("browserWebDriver", "firefox"); 
+		String browserProperty = ""; 
+		browserProperty= System.getProperty("browserWebDriver");
 
-					System.setProperty("webdriver.gecko.driver",  "drivers/geckodriver.exe");
-					FirefoxOptions firefoxOptions = new FirefoxOptions();
-					if (headless) firefoxOptions.setHeadless(headless);
-					driver = new FirefoxDriver(firefoxOptions);
+		// run headless: clean test -DbrowserWebDriver=firefox -Dheadless=true
+		Boolean headless = false;
+		if (System.getProperty("headless").equals("true")) {
+			headless = true;
+		}
 
-					break;
-				case 1: // chrome
-					// Chrome
-					// Descargar Chromedriver de https://chromedriver.chromium.org/downloads
-					// Descomprimir el archivo chromedriver.exe en la carpeta drivers
+		switch (browserProperty) {
+		case "firefox": 
+			// Firefox 
+			// Descargar geckodriver de https://github.com/mozilla/geckodriver/releases
+			// Descomprimir el archivo geckodriver.exe en la carpeta drivers
 
-					System.setProperty("webdriver.chrome.driver", "drivers/chromedriver.exe");
-					ChromeOptions chromeOptions = new ChromeOptions();
-					if (headless) chromeOptions.setHeadless(headless);
-					chromeOptions.addArguments("window-size=1920,1080");
-					driver = new ChromeDriver(chromeOptions);
+			System.setProperty("webdriver.gecko.driver",  "drivers/geckodriver.exe");
+			FirefoxOptions firefoxOptions = new FirefoxOptions();
+			if (headless) firefoxOptions.setHeadless(headless);
+			driver = new FirefoxDriver(firefoxOptions);
 
-					break;
+			break;
+		case "chrome": 
+			// Chrome
+			// Descargar Chromedriver de https://chromedriver.chromium.org/downloads
+			// Descomprimir el archivo chromedriver.exe en la carpeta drivers
 
-				default:
-					fail("Please select a browser");
-					break;
-				}
-				js = (JavascriptExecutor) driver;
-				vars = new HashMap<String, Object>();
-	  }
-  @After
-  public void tearDown() {
-    driver.quit();
-  }
-  @Test
-  public void registrocorrecto() {
-    // Test name: registro_correcto
-    // Step # | name | target | value
-    // 1 | open | / | 
-    driver.get("http://hmis21-weblogin2.azurewebsites.net/");
-    // 2 | setWindowSize | 1218x873 | 
-    driver.manage().window().setSize(new Dimension(1218, 873));
-    // 3 | click | linkText=Sign up | 
-    driver.findElement(By.linkText("Sign up")).click();
-    // 4 | type | id=full-name | Alumno Ual
-    driver.findElement(By.id("full-name")).sendKeys("Alumno Ual");
-    // 5 | executeScript | return "ual-" + Math.floor(Math.random()*1500000)+"@ual.es" | emailrandom
-    vars.put("emailrandom", js.executeScript("return \"ual-\" + Math.floor(Math.random()*1500000)+\"@ual.es\""));
-    // 6 | echo | ${emailrandom} | 
-    System.out.println(vars.get("emailrandom").toString());
-    // 7 | type | id=email-address | ${emailrandom}
-    driver.findElement(By.id("email-address")).sendKeys(vars.get("emailrandom").toString());
-    // 8 | type | id=password | secreto
-    driver.findElement(By.id("password")).sendKeys("secreto");
-    // 9 | type | id=confirm-password | secreto
-    driver.findElement(By.id("confirm-password")).sendKeys("secreto");
-    // 10 | click | id=terms-agreement | 
-    driver.findElement(By.id("terms-agreement")).click();
-    // 11 | click | css=.ajax-button | 
-    driver.findElement(By.cssSelector(".ajax-button")).click();
-    // 12 | assertTitle | NEW_APP_NAME | 
-    assertThat(driver.getTitle(), is("NEW_APP_NAME"));
-  }
-  @Test
-  public void contraseniafalta() {
-    // Test name: contrasenia_falta
-    // Step # | name | target | value
-    // 1 | open | / | 
-    driver.get("http://hmis21-weblogin2.azurewebsites.net/");
-    // 2 | setWindowSize | 1218x873 | 
-    driver.manage().window().setSize(new Dimension(1218, 873));
-    // 3 | click | linkText=Sign up | 
-    driver.findElement(By.linkText("Sign up")).click();
-    // 4 | type | id=full-name | Alumno Ual
-    driver.findElement(By.id("full-name")).sendKeys("Alumno Ual");
-    // 5 | executeScript | return "ual-" + Math.floor(Math.random()*1500000)+"@ual.es" | emailrandom
-    vars.put("emailrandom", js.executeScript("return \"ual-\" + Math.floor(Math.random()*1500000)+\"@ual.es\""));
-    // 6 | echo | ${emailrandom} | 
-    System.out.println(vars.get("emailrandom").toString());
-    // 7 | type | id=email-address | ${emailrandom}
-    driver.findElement(By.id("email-address")).sendKeys(vars.get("emailrandom").toString());
-    // 8 | click | id=terms-agreement | 
-    driver.findElement(By.id("terms-agreement")).click();
-    // 9 | click | css=.ajax-button | 
-    driver.findElement(By.cssSelector(".ajax-button")).click();
-    // 10 | assertText | css=.form-group:nth-child(3) > .invalid-feedback | Please enter a password.
-    assertThat(driver.findElement(By.cssSelector(".form-group:nth-child(3) > .invalid-feedback")).getText(), is("Please enter a password."));
-  }
-  @Test
-  public void contrasenianocoincide() {
-    // Test name: contrasenia_no_coincide
-    // Step # | name | target | value
-    // 1 | open | / | 
-    driver.get("http://hmis21-weblogin2.azurewebsites.net/");
-    // 2 | setWindowSize | 1218x873 | 
-    driver.manage().window().setSize(new Dimension(1218, 873));
-    // 3 | click | linkText=Sign up | 
-    driver.findElement(By.linkText("Sign up")).click();
-    // 4 | type | id=full-name | Alumno Ual
-    driver.findElement(By.id("full-name")).sendKeys("Alumno Ual");
-    // 5 | executeScript | return "ual-" + Math.floor(Math.random()*1500000)+"@ual.es" | emailrandom
-    vars.put("emailrandom", js.executeScript("return \"ual-\" + Math.floor(Math.random()*1500000)+\"@ual.es\""));
-    // 6 | echo | ${emailrandom} | 
-    System.out.println(vars.get("emailrandom").toString());
-    // 7 | type | id=email-address | ${emailrandom}
-    driver.findElement(By.id("email-address")).sendKeys(vars.get("emailrandom").toString());
-    // 8 | type | id=password | secreto
-    driver.findElement(By.id("password")).sendKeys("secreto");
-    // 9 | type | id=confirm-password | secretito
-    driver.findElement(By.id("confirm-password")).sendKeys("secretito");
-    // 10 | click | id=terms-agreement | 
-    driver.findElement(By.id("terms-agreement")).click();
-    // 11 | click | css=.ajax-button | 
-    driver.findElement(By.cssSelector(".ajax-button")).click();
-    // 12 | assertText | css=.invalid-feedback | Your password and confirmation do not match.
-    assertThat(driver.findElement(By.cssSelector(".invalid-feedback")).getText(), is("Your password and confirmation do not match."));
-  }
-  @Test
-  public void correofalta() {
-    // Test name: correo_falta
-    // Step # | name | target | value
-    // 1 | open | / | 
-    driver.get("http://hmis21-weblogin2.azurewebsites.net/");
-    // 2 | setWindowSize | 1218x873 | 
-    driver.manage().window().setSize(new Dimension(1218, 873));
-    // 3 | click | linkText=Sign up | 
-    driver.findElement(By.linkText("Sign up")).click();
-    // 4 | type | id=full-name | Alumno Ual
-    driver.findElement(By.id("full-name")).sendKeys("Alumno Ual");
-    // 5 | type | id=password | secreto
-    driver.findElement(By.id("password")).sendKeys("secreto");
-    // 6 | type | id=confirm-password | secreto
-    driver.findElement(By.id("confirm-password")).sendKeys("secreto");
-    // 7 | click | id=terms-agreement | 
-    driver.findElement(By.id("terms-agreement")).click();
-    // 8 | click | css=.ajax-button | 
-    driver.findElement(By.cssSelector(".ajax-button")).click();
-    // 9 | assertText | css=.invalid-feedback | Please enter a valid email address.
-    assertThat(driver.findElement(By.cssSelector(".invalid-feedback")).getText(), is("Please enter a valid email address."));
-  }
-  @Test
-  public void correoincorrecto1() {
-    // Test name: correo_incorrecto1
-    // Step # | name | target | value
-    // 1 | open | / | 
-    driver.get("http://hmis21-weblogin2.azurewebsites.net/");
-    // 2 | setWindowSize | 1218x873 | 
-    driver.manage().window().setSize(new Dimension(1218, 873));
-    // 3 | click | linkText=Sign up | 
-    driver.findElement(By.linkText("Sign up")).click();
-    // 4 | type | id=full-name | Alumno Ual
-    driver.findElement(By.id("full-name")).sendKeys("Alumno Ual");
-    // 5 | type | id=email-address | correo
-    driver.findElement(By.id("email-address")).sendKeys("correo");
-    // 6 | type | id=password | secreto
-    driver.findElement(By.id("password")).sendKeys("secreto");
-    // 7 | type | id=confirm-password | secreto
-    driver.findElement(By.id("confirm-password")).sendKeys("secreto");
-    // 8 | click | id=terms-agreement | 
-    driver.findElement(By.id("terms-agreement")).click();
-    // 9 | click | css=.ajax-button | 
-    driver.findElement(By.cssSelector(".ajax-button")).click();
-    // 10 | executeScript | return document.getElementById("email-address").validationMessage | message
-    vars.put("message", js.executeScript("return document.getElementById(\"email-address\").validationMessage"));
-    // 11 | echo | ${message} | 
-    System.out.println(vars.get("message").toString());
-    // 12 | assert | message | Please include an '@' in the email address. 'correo' is missing an '@'.
-    assertEquals(vars.get("message").toString(), "Incluye un signo \"@\" en la dirección de correo electrónico. La dirección \"correo\" no incluye el signo \"@\".");
-  }
-  @Test
-  public void correoincorrecto2() {
-    // Test name: correo_incorrecto2
-    // Step # | name | target | value
-    // 1 | open | / | 
-    driver.get("http://hmis21-weblogin2.azurewebsites.net/");
-    // 2 | setWindowSize | 1218x873 | 
-    driver.manage().window().setSize(new Dimension(1218, 873));
-    // 3 | click | linkText=Sign up | 
-    driver.findElement(By.linkText("Sign up")).click();
-    // 4 | type | id=full-name | Alumno Ual
-    driver.findElement(By.id("full-name")).sendKeys("Alumno Ual");
-    // 5 | type | id=email-address | correo@
-    driver.findElement(By.id("email-address")).sendKeys("correo@");
-    // 6 | type | id=password | secreto
-    driver.findElement(By.id("password")).sendKeys("secreto");
-    // 7 | type | id=confirm-password | secreto
-    driver.findElement(By.id("confirm-password")).sendKeys("secreto");
-    // 8 | click | id=terms-agreement | 
-    driver.findElement(By.id("terms-agreement")).click();
-    // 9 | click | css=.ajax-button | 
-    driver.findElement(By.cssSelector(".ajax-button")).click();
-    // 10 | executeScript | return document.getElementById("email-address").validationMessage | message
-    vars.put("message", js.executeScript("return document.getElementById(\"email-address\").validationMessage"));
-    // 11 | echo | ${message} | 
-    System.out.println(vars.get("message").toString());
-    // 12 | assert | message | Please enter a part following '@'. 'correo@' is incomplete.
-    assertEquals(vars.get("message").toString(), "Introduce texto detrás del signo \"@\". La dirección \"correo@\" está incompleta.");
-  }
-  @Test
-  public void nombrefalta() {
-    // Test name: nombre_falta
-    // Step # | name | target | value
-    // 1 | open | / | 
-    driver.get("http://hmis21-weblogin2.azurewebsites.net/");
-    // 2 | setWindowSize | 1218x873 | 
-    driver.manage().window().setSize(new Dimension(1218, 873));
-    // 3 | click | linkText=Sign up | 
-    driver.findElement(By.linkText("Sign up")).click();
-    // 4 | executeScript | return "ual-" + Math.floor(Math.random()*1500000)+"@ual.es" | emailrandom
-    vars.put("emailrandom", js.executeScript("return \"ual-\" + Math.floor(Math.random()*1500000)+\"@ual.es\""));
-    // 5 | echo | ${emailrandom} | 
-    System.out.println(vars.get("emailrandom").toString());
-    // 6 | type | id=email-address | ${emailrandom}
-    driver.findElement(By.id("email-address")).sendKeys(vars.get("emailrandom").toString());
-    // 7 | type | id=password | secreto
-    driver.findElement(By.id("password")).sendKeys("secreto");
-    // 8 | type | id=confirm-password | secreto
-    driver.findElement(By.id("confirm-password")).sendKeys("secreto");
-    // 9 | click | id=terms-agreement | 
-    driver.findElement(By.id("terms-agreement")).click();
-    // 10 | click | css=.ajax-button | 
-    driver.findElement(By.cssSelector(".ajax-button")).click();
-    // 11 | assertText | css=.invalid-feedback | Please enter your full name.
-    assertThat(driver.findElement(By.cssSelector(".invalid-feedback")).getText(), is("Please enter your full name."));
-  }
+			System.setProperty("webdriver.chrome.driver", "drivers/chromedriver.exe");
+			ChromeOptions chromeOptions = new ChromeOptions();
+			if (headless) chromeOptions.setHeadless(headless);
+			chromeOptions.addArguments("window-size=1920,1080");
+			driver = new ChromeDriver(chromeOptions);
+
+			break;
+
+		default:
+			fail("Please select a browser");
+			break;
+		}
+		js = (JavascriptExecutor) driver;
+		vars = new HashMap<String, Object>();
+	}
+	@After
+	public void tearDown() {
+		driver.quit();
+	}
+	@Test
+	public void registrocorrecto() {
+		// Test name: registro_correcto
+		// Step # | name | target | value
+		// 1 | open | / | 
+		driver.get("http://hmis21-weblogin2.azurewebsites.net/");
+		// 2 | setWindowSize | 1218x873 | 
+		driver.manage().window().setSize(new Dimension(1218, 873));
+		// 3 | click | linkText=Sign up | 
+		driver.findElement(By.linkText("Sign up")).click();
+		// 4 | type | id=full-name | Alumno Ual
+		driver.findElement(By.id("full-name")).sendKeys("Alumno Ual");
+		// 5 | executeScript | return "ual-" + Math.floor(Math.random()*1500000)+"@ual.es" | emailrandom
+		vars.put("emailrandom", js.executeScript("return \"ual-\" + Math.floor(Math.random()*1500000)+\"@ual.es\""));
+		// 6 | echo | ${emailrandom} | 
+		System.out.println(vars.get("emailrandom").toString());
+		// 7 | type | id=email-address | ${emailrandom}
+		driver.findElement(By.id("email-address")).sendKeys(vars.get("emailrandom").toString());
+		// 8 | type | id=password | secreto
+		driver.findElement(By.id("password")).sendKeys("secreto");
+		// 9 | type | id=confirm-password | secreto
+		driver.findElement(By.id("confirm-password")).sendKeys("secreto");
+		// 10 | click | id=terms-agreement | 
+		driver.findElement(By.id("terms-agreement")).click();
+		// 11 | click | css=.ajax-button | 
+		driver.findElement(By.cssSelector(".ajax-button")).click();
+		// 12 | assertTitle | NEW_APP_NAME | 
+		assertThat(driver.getTitle(), is("NEW_APP_NAME"));
+	}
+	@Test
+	public void contraseniafalta() {
+		// Test name: contrasenia_falta
+		// Step # | name | target | value
+		// 1 | open | / | 
+		driver.get("http://hmis21-weblogin2.azurewebsites.net/");
+		// 2 | setWindowSize | 1218x873 | 
+		driver.manage().window().setSize(new Dimension(1218, 873));
+		// 3 | click | linkText=Sign up | 
+		driver.findElement(By.linkText("Sign up")).click();
+		// 4 | type | id=full-name | Alumno Ual
+		driver.findElement(By.id("full-name")).sendKeys("Alumno Ual");
+		// 5 | executeScript | return "ual-" + Math.floor(Math.random()*1500000)+"@ual.es" | emailrandom
+		vars.put("emailrandom", js.executeScript("return \"ual-\" + Math.floor(Math.random()*1500000)+\"@ual.es\""));
+		// 6 | echo | ${emailrandom} | 
+		System.out.println(vars.get("emailrandom").toString());
+		// 7 | type | id=email-address | ${emailrandom}
+		driver.findElement(By.id("email-address")).sendKeys(vars.get("emailrandom").toString());
+		// 8 | click | id=terms-agreement | 
+		driver.findElement(By.id("terms-agreement")).click();
+		// 9 | click | css=.ajax-button | 
+		driver.findElement(By.cssSelector(".ajax-button")).click();
+		// 10 | assertText | css=.form-group:nth-child(3) > .invalid-feedback | Please enter a password.
+		assertThat(driver.findElement(By.cssSelector(".form-group:nth-child(3) > .invalid-feedback")).getText(), is("Please enter a password."));
+	}
+	@Test
+	public void contrasenianocoincide() {
+		// Test name: contrasenia_no_coincide
+		// Step # | name | target | value
+		// 1 | open | / | 
+		driver.get("http://hmis21-weblogin2.azurewebsites.net/");
+		// 2 | setWindowSize | 1218x873 | 
+		driver.manage().window().setSize(new Dimension(1218, 873));
+		// 3 | click | linkText=Sign up | 
+		driver.findElement(By.linkText("Sign up")).click();
+		// 4 | type | id=full-name | Alumno Ual
+		driver.findElement(By.id("full-name")).sendKeys("Alumno Ual");
+		// 5 | executeScript | return "ual-" + Math.floor(Math.random()*1500000)+"@ual.es" | emailrandom
+		vars.put("emailrandom", js.executeScript("return \"ual-\" + Math.floor(Math.random()*1500000)+\"@ual.es\""));
+		// 6 | echo | ${emailrandom} | 
+		System.out.println(vars.get("emailrandom").toString());
+		// 7 | type | id=email-address | ${emailrandom}
+		driver.findElement(By.id("email-address")).sendKeys(vars.get("emailrandom").toString());
+		// 8 | type | id=password | secreto
+		driver.findElement(By.id("password")).sendKeys("secreto");
+		// 9 | type | id=confirm-password | secretito
+		driver.findElement(By.id("confirm-password")).sendKeys("secretito");
+		// 10 | click | id=terms-agreement | 
+		driver.findElement(By.id("terms-agreement")).click();
+		// 11 | click | css=.ajax-button | 
+		driver.findElement(By.cssSelector(".ajax-button")).click();
+		// 12 | assertText | css=.invalid-feedback | Your password and confirmation do not match.
+		assertThat(driver.findElement(By.cssSelector(".invalid-feedback")).getText(), is("Your password and confirmation do not match."));
+	}
+	@Test
+	public void correofalta() {
+		// Test name: correo_falta
+		// Step # | name | target | value
+		// 1 | open | / | 
+		driver.get("http://hmis21-weblogin2.azurewebsites.net/");
+		// 2 | setWindowSize | 1218x873 | 
+		driver.manage().window().setSize(new Dimension(1218, 873));
+		// 3 | click | linkText=Sign up | 
+		driver.findElement(By.linkText("Sign up")).click();
+		// 4 | type | id=full-name | Alumno Ual
+		driver.findElement(By.id("full-name")).sendKeys("Alumno Ual");
+		// 5 | type | id=password | secreto
+		driver.findElement(By.id("password")).sendKeys("secreto");
+		// 6 | type | id=confirm-password | secreto
+		driver.findElement(By.id("confirm-password")).sendKeys("secreto");
+		// 7 | click | id=terms-agreement | 
+		driver.findElement(By.id("terms-agreement")).click();
+		// 8 | click | css=.ajax-button | 
+		driver.findElement(By.cssSelector(".ajax-button")).click();
+		// 9 | assertText | css=.invalid-feedback | Please enter a valid email address.
+		assertThat(driver.findElement(By.cssSelector(".invalid-feedback")).getText(), is("Please enter a valid email address."));
+	}
+	@Test
+	public void correoincorrecto1() {
+		// Test name: correo_incorrecto1
+		// Step # | name | target | value
+		// 1 | open | / | 
+		driver.get("http://hmis21-weblogin2.azurewebsites.net/");
+		// 2 | setWindowSize | 1218x873 | 
+		driver.manage().window().setSize(new Dimension(1218, 873));
+		// 3 | click | linkText=Sign up | 
+		driver.findElement(By.linkText("Sign up")).click();
+		// 4 | type | id=full-name | Alumno Ual
+		driver.findElement(By.id("full-name")).sendKeys("Alumno Ual");
+		// 5 | type | id=email-address | correo
+		driver.findElement(By.id("email-address")).sendKeys("correo");
+		// 6 | type | id=password | secreto
+		driver.findElement(By.id("password")).sendKeys("secreto");
+		// 7 | type | id=confirm-password | secreto
+		driver.findElement(By.id("confirm-password")).sendKeys("secreto");
+		// 8 | click | id=terms-agreement | 
+		driver.findElement(By.id("terms-agreement")).click();
+		// 9 | click | css=.ajax-button | 
+		driver.findElement(By.cssSelector(".ajax-button")).click();
+		// 10 | executeScript | return document.getElementById("email-address").validationMessage | message
+		vars.put("message", js.executeScript("return document.getElementById(\"email-address\").validationMessage"));
+		// 11 | echo | ${message} | 
+		System.out.println(vars.get("message").toString());
+		// 12 | assert | message | Please include an '@' in the email address. 'correo' is missing an '@'.
+		assertEquals(vars.get("message").toString(), "Incluye un signo \"@\" en la dirección de correo electrónico. La dirección \"correo\" no incluye el signo \"@\".");
+	}
+	@Test
+	public void correoincorrecto2() {
+		// Test name: correo_incorrecto2
+		// Step # | name | target | value
+		// 1 | open | / | 
+		driver.get("http://hmis21-weblogin2.azurewebsites.net/");
+		// 2 | setWindowSize | 1218x873 | 
+		driver.manage().window().setSize(new Dimension(1218, 873));
+		// 3 | click | linkText=Sign up | 
+		driver.findElement(By.linkText("Sign up")).click();
+		// 4 | type | id=full-name | Alumno Ual
+		driver.findElement(By.id("full-name")).sendKeys("Alumno Ual");
+		// 5 | type | id=email-address | correo@
+		driver.findElement(By.id("email-address")).sendKeys("correo@");
+		// 6 | type | id=password | secreto
+		driver.findElement(By.id("password")).sendKeys("secreto");
+		// 7 | type | id=confirm-password | secreto
+		driver.findElement(By.id("confirm-password")).sendKeys("secreto");
+		// 8 | click | id=terms-agreement | 
+		driver.findElement(By.id("terms-agreement")).click();
+		// 9 | click | css=.ajax-button | 
+		driver.findElement(By.cssSelector(".ajax-button")).click();
+		// 10 | executeScript | return document.getElementById("email-address").validationMessage | message
+		vars.put("message", js.executeScript("return document.getElementById(\"email-address\").validationMessage"));
+		// 11 | echo | ${message} | 
+		System.out.println(vars.get("message").toString());
+		// 12 | assert | message | Please enter a part following '@'. 'correo@' is incomplete.
+		assertEquals(vars.get("message").toString(), "Introduce texto detrás del signo \"@\". La dirección \"correo@\" está incompleta.");
+	}
+	@Test
+	public void nombrefalta() {
+		// Test name: nombre_falta
+		// Step # | name | target | value
+		// 1 | open | / | 
+		driver.get("http://hmis21-weblogin2.azurewebsites.net/");
+		// 2 | setWindowSize | 1218x873 | 
+		driver.manage().window().setSize(new Dimension(1218, 873));
+		// 3 | click | linkText=Sign up | 
+		driver.findElement(By.linkText("Sign up")).click();
+		// 4 | executeScript | return "ual-" + Math.floor(Math.random()*1500000)+"@ual.es" | emailrandom
+		vars.put("emailrandom", js.executeScript("return \"ual-\" + Math.floor(Math.random()*1500000)+\"@ual.es\""));
+		// 5 | echo | ${emailrandom} | 
+		System.out.println(vars.get("emailrandom").toString());
+		// 6 | type | id=email-address | ${emailrandom}
+		driver.findElement(By.id("email-address")).sendKeys(vars.get("emailrandom").toString());
+		// 7 | type | id=password | secreto
+		driver.findElement(By.id("password")).sendKeys("secreto");
+		// 8 | type | id=confirm-password | secreto
+		driver.findElement(By.id("confirm-password")).sendKeys("secreto");
+		// 9 | click | id=terms-agreement | 
+		driver.findElement(By.id("terms-agreement")).click();
+		// 10 | click | css=.ajax-button | 
+		driver.findElement(By.cssSelector(".ajax-button")).click();
+		// 11 | assertText | css=.invalid-feedback | Please enter your full name.
+		assertThat(driver.findElement(By.cssSelector(".invalid-feedback")).getText(), is("Please enter your full name."));
+	}
 }
