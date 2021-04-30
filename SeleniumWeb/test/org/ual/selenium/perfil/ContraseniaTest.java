@@ -33,13 +33,14 @@ public class ContraseniaTest {
 	JavascriptExecutor js;
 	@Before
 	public void setUp() {
+		/*
 		FirefoxOptions firefoxOptions = new FirefoxOptions();
 		firefoxOptions.setHeadless(true);
 		driver = new FirefoxDriver(firefoxOptions);
-				
-		// ChromeOptions chromeOptions = new ChromeOptions();
-		// chromeOptions.setHeadless(true);
-		// driver = new ChromeDriver(chromeOptions);
+			*/	
+		ChromeOptions chromeOptions = new ChromeOptions();
+		chromeOptions.setHeadless(true);
+		driver = new ChromeDriver(chromeOptions);
 		
 		js = (JavascriptExecutor) driver;
 		vars = new HashMap<String, Object>();
