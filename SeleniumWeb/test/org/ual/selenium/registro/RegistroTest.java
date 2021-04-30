@@ -209,7 +209,7 @@ public class RegistroTest {
 		// 11 | echo | ${message} | 
 		System.out.println(vars.get("message").toString());
 		// 12 | assert | message | Please enter a part following '@'. 'correo@' is incomplete.
-		assertEquals(vars.get("message").toString(), "Please enter an email address");
+		assertEquals(vars.get("message").toString(), "Please enter an email address.");
 	}
 	@Test
 	public void nombrefalta() {
