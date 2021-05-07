@@ -32,15 +32,41 @@ public class LoginTest {
 	JavascriptExecutor js;
 	@Before
 	public void setUp() {
-		/*
-		FirefoxOptions firefoxOptions = new FirefoxOptions();
-		firefoxOptions.setHeadless(true);
-		driver = new FirefoxDriver(firefoxOptions);
-			*/	
-		ChromeOptions chromeOptions = new ChromeOptions();
-		chromeOptions.setHeadless(true);
-		driver = new ChromeDriver(chromeOptions);
-		
+
+		// Browser selector 
+		String browser = "";
+		Boolean headless = true;
+		browser = System.getProperty("browserProperty");
+
+		switch (browser) {
+		case "firefox":  // firefox
+			// Firefox 
+			// Descargar geckodriver de https://github.com/mozilla/geckodriver/releases
+			// Descomprimir el archivo geckodriver.exe en la carpeta drivers
+
+			//System.setProperty("webdriver.gecko.driver",  "drivers/geckodriver.exe");
+			FirefoxOptions firefoxOptions = new FirefoxOptions();
+			if (headless) firefoxOptions.setHeadless(headless);
+			driver = new FirefoxDriver(firefoxOptions);
+
+			break;
+		case "chrome": // chrome
+			// Chrome
+			// Descargar Chromedriver de https://chromedriver.chromium.org/downloads
+			// Descomprimir el archivo chromedriver.exe en la carpeta drivers
+
+			//System.setProperty("webdriver.chrome.driver", "drivers/chromedriver.exe");
+			ChromeOptions chromeOptions = new ChromeOptions();
+			if (headless) chromeOptions.setHeadless(headless);
+			chromeOptions.addArguments("window-size=1920,1080");
+			driver = new ChromeDriver(chromeOptions);
+
+			break;
+
+		default:
+			fail("Please select a browser");
+			break;
+		}
 		js = (JavascriptExecutor) driver;
 		vars = new HashMap<String, Object>();
 	}
