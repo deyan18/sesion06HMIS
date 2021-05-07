@@ -36,7 +36,7 @@ public class PrincipalTest {
 		// Browser selector 
 		String browser = "";
 		Boolean headless = true;
-		browser = System.getProperty("browserProperty");
+		browser = "firefox";
 
 		switch (browser) {
 		case "firefox":  // firefox
