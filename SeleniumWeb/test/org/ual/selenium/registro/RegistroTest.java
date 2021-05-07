@@ -30,14 +30,17 @@ public class RegistroTest {
 	private WebDriver driver;
 	private Map<String, Object> vars;
 	JavascriptExecutor js;
+
+	
 	@Before
 	public void setUp() {
 
 		// Browser selector 
 		String browser = "";
 		Boolean headless = true;
-		browser = "firefox";
+		browser = System.getProperty("browserProperty");
 
+		System.out.print("\n\n\n\n"+browser);
 		switch (browser) {
 		case "firefox":  // firefox
 			// Firefox 

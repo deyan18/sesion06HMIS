@@ -39,6 +39,7 @@ public class MiembrosTest {
 		String browser = "";
 		Boolean headless = true;
 		browser = "firefox";
+		System.out.print("\n\n\n\n"+browser);
 
 		switch (browser) {
 		case "firefox":  // firefox
