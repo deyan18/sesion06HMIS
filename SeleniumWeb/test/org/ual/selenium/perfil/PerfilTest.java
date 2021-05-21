@@ -252,8 +252,6 @@ public class PerfilTest {
 			// 23 | assert | message | El signo "." está colocado en una posición incorrecta en la dirección "algo.".
 			assertEquals(vars.get("message").toString(), "Please enter an email address.");
 		}
-		// 23 | assert | message | El signo "." está colocado en una posición incorrecta en la dirección "algo.".
-		assertEquals(vars.get("message").toString(), "Please enter an email address.");
 		// 24 | click | id=header-account-menu-link | 
 		driver.findElement(By.id("header-account-menu-link")).click();
 		// 25 | click | linkText=Sign out | 
