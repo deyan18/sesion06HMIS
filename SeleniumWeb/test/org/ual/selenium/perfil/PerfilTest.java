@@ -245,6 +245,13 @@ public class PerfilTest {
 		vars.put("message", js.executeScript("return document.getElementById(\"email-address\").validationMessage"));
 		// 22 | echo | ${message} | 
 		System.out.println(vars.get("message").toString());
+		if(System.getProperty("browserProperty").equals("chrome")) {
+			// 23 | assert | message | El signo "." está colocado en una posición incorrecta en la dirección "algo.".
+			assertEquals(vars.get("message").toString(), "'.' is used at a wrong position in 'algo.'.");
+		}else {
+			// 23 | assert | message | El signo "." está colocado en una posición incorrecta en la dirección "algo.".
+			assertEquals(vars.get("message").toString(), "Please enter an email address.");
+		}
 		// 23 | assert | message | El signo "." está colocado en una posición incorrecta en la dirección "algo.".
 		assertEquals(vars.get("message").toString(), "Please enter an email address.");
 		// 24 | click | id=header-account-menu-link | 
@@ -305,8 +312,14 @@ public class PerfilTest {
 		vars.put("message", js.executeScript("return document.getElementById(\"email-address\").validationMessage"));
 		// 22 | echo | ${message} | 
 		System.out.println(vars.get("message").toString());
-		// 23 | assert | message | Incluye un signo "@" en la dirección de correo electrónico. La dirección "ual" no incluye el signo "@".
-		assertEquals(vars.get("message").toString(), "Please enter an email address.");
+		if(System.getProperty("browserProperty").equals("chrome")) {
+			// 23 | assert | message | Incluye un signo "@" en la dirección de correo electrónico. La dirección "ual" no incluye el signo "@".
+			assertEquals(vars.get("message").toString(), "Please include an '@' in the email address. 'ual' is missing an '@'.");
+		}else {
+			// 23 | assert | message | Incluye un signo "@" en la dirección de correo electrónico. La dirección "ual" no incluye el signo "@".
+			assertEquals(vars.get("message").toString(), "Please enter an email address.");
+		}
+
 		// 24 | click | id=header-account-menu-link | 
 		driver.findElement(By.id("header-account-menu-link")).click();
 		// 25 | click | linkText=Sign out | 

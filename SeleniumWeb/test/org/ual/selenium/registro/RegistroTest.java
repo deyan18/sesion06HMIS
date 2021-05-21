@@ -209,8 +209,14 @@ public class RegistroTest {
 		vars.put("message", js.executeScript("return document.getElementById(\"email-address\").validationMessage"));
 		// 11 | echo | ${message} | 
 		System.out.println(vars.get("message").toString());
-		// 12 | assert | message | Please include an '@' in the email address. 'correo' is missing an '@'.
-		assertEquals(vars.get("message").toString(), "Please enter an email address.");
+		if(System.getProperty("browserProperty").equals("chrome")) {
+			// 12 | assert | message | Please include an '@' in the email address. 'correo' is missing an '@'.
+			assertEquals(vars.get("message").toString(), "Please include an '@' in the email address. 'correo' is missing an '@'.");
+		}else {
+			// 12 | assert | message | Please include an '@' in the email address. 'correo' is missing an '@'.
+			assertEquals(vars.get("message").toString(), "Please enter an email address.");
+		}
+
 	}
 	@Test
 	public void correoincorrecto2() {
@@ -238,8 +244,14 @@ public class RegistroTest {
 		vars.put("message", js.executeScript("return document.getElementById(\"email-address\").validationMessage"));
 		// 11 | echo | ${message} | 
 		System.out.println(vars.get("message").toString());
-		// 12 | assert | message | Please enter a part following '@'. 'correo@' is incomplete.
-		assertEquals(vars.get("message").toString(), "Please enter an email address.");
+		if(System.getProperty("browserProperty").equals("chrome")) {
+			// 12 | assert | message | Please enter a part following '@'. 'correo@' is incomplete.
+			assertEquals(vars.get("message").toString(), "Please enter a part following '@'. 'correo@' is incomplete.");
+		}else {
+			// 12 | assert | message | Please enter a part following '@'. 'correo@' is incomplete.
+			assertEquals(vars.get("message").toString(), "Please enter an email address.");
+		}
+		
 	}
 	@Test
 	public void nombrefalta() {
